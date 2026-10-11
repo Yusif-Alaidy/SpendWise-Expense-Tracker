@@ -1,0 +1,173 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\entities\\budget.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\entities\\budget.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\entities\\transactiontag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\entities\\transactiontag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\entities\\tag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\entities\\tag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\entities\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\entities\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\enums\\transactiontag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\enums\\transactiontag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\entities\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\entities\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\common\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\common\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\enums\\accounttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\enums\\accounttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|d:\\programing\\projects\\spendwise expense tracker\\back-end\\spendwise\\src\\spendwise.domain\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B475602A-16E8-3A8F-F537-87839E23C029}|src\\SpendWise.Domain\\SpendWise.Domain.csproj|solutionrelative:src\\spendwise.domain\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Budget.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Budget.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Entities\\Budget.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Budget.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Entities\\Budget.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:17:38.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TransactionTag.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\TransactionTag.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Entities\\TransactionTag.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\TransactionTag.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Entities\\TransactionTag.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:16:59.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Tag.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Tag.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Entities\\Tag.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Tag.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Entities\\Tag.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:15:28.433Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Transaction.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Entities\\Transaction.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Transaction.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Entities\\Transaction.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBQAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:13:12.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Category.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Category.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Entities\\Category.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Category.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Entities\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:11:04.267Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Account.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Account.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Entities\\Account.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Entities\\Account.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Entities\\Account.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:09:02.302Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BaseEntity.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Common\\BaseEntity.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Common\\BaseEntity.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Common\\BaseEntity.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Common\\BaseEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:06:06.782Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AccountType.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Enums\\AccountType.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Enums\\AccountType.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Enums\\AccountType.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Enums\\AccountType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T23:03:06.839Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TransactionTag.cs",
+              "DocumentMoniker": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Enums\\TransactionTag.cs",
+              "RelativeDocumentMoniker": "src\\SpendWise.Domain\\Enums\\TransactionTag.cs",
+              "ToolTip": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Domain\\Enums\\TransactionTag.cs",
+              "RelativeToolTip": "src\\SpendWise.Domain\\Enums\\TransactionTag.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-11T22:28:23.202Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

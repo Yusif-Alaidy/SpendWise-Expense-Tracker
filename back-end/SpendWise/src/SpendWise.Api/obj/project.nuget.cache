@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "FX6TzP6/n3s=",
+  "success": true,
+  "projectFilePath": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Api\\SpendWise.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.12\\microsoft.aspnetcore.openapi.10.0.12.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.openapi\\2.12.0\\microsoft.openapi.2.12.0.nupkg.sha512"
+  ],
+  "logs": []
+}

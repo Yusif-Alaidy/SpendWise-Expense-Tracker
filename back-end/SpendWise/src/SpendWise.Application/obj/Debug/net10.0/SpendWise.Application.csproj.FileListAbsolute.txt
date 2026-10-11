@@ -1,0 +1,15 @@
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\bin\Debug\net10.0\SpendWise.Application.deps.json
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\bin\Debug\net10.0\SpendWise.Application.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\bin\Debug\net10.0\SpendWise.Application.pdb
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\bin\Debug\net10.0\SpendWise.Domain.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\bin\Debug\net10.0\SpendWise.Domain.pdb
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.csproj.AssemblyReference.cache
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.AssemblyInfoInputs.cache
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.AssemblyInfo.cs
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.csproj.CoreCompileInputs.cache
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWis.42EFC917.Up2Date
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\refint\SpendWise.Application.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.pdb
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\ref\SpendWise.Application.dll
