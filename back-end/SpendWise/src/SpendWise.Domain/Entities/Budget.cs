@@ -9,6 +9,6 @@ public class Budget : BaseEntity
     public Category Category { get; set; } = null!;
 
     public decimal LimitAmount { get; set; }
-    public int Year { get; set; }
-    public int Month { get; set; }
+    public int Year { get; set; } 
+    public int Month { get; set; } 
 }

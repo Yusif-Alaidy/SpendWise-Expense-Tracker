@@ -6,8 +6,6 @@ namespace SpendWise.Domain.Entities;
 
 public class Transaction : BaseEntity
 {
-    public Guid UserId { get; set; }
-
     public int AccountId { get; set; }
     public Account Account { get; set; } = null!;
 

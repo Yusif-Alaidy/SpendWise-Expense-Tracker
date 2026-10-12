@@ -9,7 +9,7 @@ public class Category : BaseEntity
 {
     public Guid UserId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public TransactionTag Type { get; set; }
+    public TransactionType Type { get; set; }
     public string Color { get; set; } = "#888888";
 
     public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();

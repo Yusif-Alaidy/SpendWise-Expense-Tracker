@@ -1,0 +1,99 @@
+# =====================================================
+# SpendWise: ASP.NET Core (back-end) + Angular (front-end)
+# Put this file in the repo root, next to back-end/ and front-end/
+# Patterns without a leading slash match at any depth.
+# =====================================================
+
+# ---------- .NET build output ----------
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+publish/
+artifacts/
+
+# ---------- Visual Studio / Rider ----------
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.DotSettings.user
+_ReSharper*/
+.idea/
+*.swp
+*.pubxml.user
+
+# ---------- Tests and coverage ----------
+TestResults/
+[Tt]est[Rr]esult*/
+coverage/
+*.coverage
+*.coveragexml
+.nyc_output/
+
+# ---------- NuGet ----------
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+# ---------- Logs (Serilog, npm, etc.) ----------
+logs/
+[Ll]ogs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---------- Secrets and local config ----------
+# Never commit real secrets. Use dotnet user-secrets in development.
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.Production.json
+*.pfx
+*.key
+secrets.json
+
+# ---------- Local databases ----------
+*.mdf
+*.ldf
+*.sqlite
+*.sqlite3
+*.db
+
+# ---------- Angular / Node ----------
+node_modules/
+dist/
+tmp/
+out-tsc/
+.angular/
+.sass-cache/
+.cache/
+*.tsbuildinfo
+connect.lock
+libpeerconnection.log
+testem.log
+typings/
+
+# ---------- Editors ----------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ---------- OS files ----------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------- Misc ----------
+*.bak
+*.tmp
+*~
