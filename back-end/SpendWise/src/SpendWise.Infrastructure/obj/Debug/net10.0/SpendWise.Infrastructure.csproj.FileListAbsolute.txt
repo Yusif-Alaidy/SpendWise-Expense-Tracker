@@ -15,3 +15,4 @@ D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWis
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Infrastructure\obj\Debug\net10.0\refint\SpendWise.Infrastructure.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Infrastructure\obj\Debug\net10.0\SpendWise.Infrastructure.pdb
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Infrastructure\obj\Debug\net10.0\ref\SpendWise.Infrastructure.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Infrastructure\obj\Debug\net10.0\SpendWise.Infrastructure.sourcelink.json

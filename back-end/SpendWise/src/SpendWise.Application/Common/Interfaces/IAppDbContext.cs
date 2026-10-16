@@ -1,0 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using SpendWise.Domain.Entities;
+
+namespace SpendWise.Application.Common.Interfaces;
+
+public interface IAppDbContext
+{
+    DbSet<Account> Accounts { get; }
+    DbSet<Category> Categories { get; }
+    DbSet<Transaction> Transactions { get; }
+    DbSet<Budget> Budgets { get; }
+    DbSet<Tag> Tags { get; }
+    DbSet<TransactionTag> TransactionTags { get; }
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+}

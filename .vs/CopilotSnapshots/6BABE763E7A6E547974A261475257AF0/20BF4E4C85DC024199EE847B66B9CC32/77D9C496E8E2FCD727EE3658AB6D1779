@@ -1,0 +1,73 @@
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using SpendWise.Application.Auth;
+using SpendWise.Application.Common.Exceptions;
+using SpendWise.Infrastructure.Identity;
+
+namespace SpendWise.Infrastructure.Authentication;
+
+public class AuthService : IAuthService
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IJwtTokenGenerator _jwt;
+    private readonly IValidator<RegisterRequest> _registerValidator;
+    private readonly IValidator<LoginRequest> _loginValidator;
+
+    public AuthService(
+        UserManager<ApplicationUser> userManager,
+        IJwtTokenGenerator jwt,
+        IValidator<RegisterRequest> registerValidator,
+        IValidator<LoginRequest> loginValidator)
+    {
+        _userManager = userManager;
+        _jwt = jwt;
+        _registerValidator = registerValidator;
+        _loginValidator = loginValidator;
+    }
+
+    public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    {
+        var validation = await _registerValidator.ValidateAsync(request, cancellationToken);
+        if (!validation.IsValid)
+            throw new ValidationException(validation.Errors);
+
+        var existing = await _userManager.FindByEmailAsync(request.Email);
+        if (existing is not null)
+            throw new ConflictException("Email is already registered.");
+
+        var user = new ApplicationUser
+        {
+            Email = request.Email,
+            UserName = request.Email,
+            DisplayName = request.DisplayName
+        };
+
+        var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
+        {
+            var failures = result.Errors.Select(e => new FluentValidation.Results.ValidationFailure(string.Empty, e.Description));
+            throw new ValidationException(failures);
+        }
+
+        var (token, expires) = _jwt.Generate(user.Id, user.Email, user.DisplayName);
+        return new AuthResponse(token, expires, user.DisplayName, user.Email);
+    }
+
+    public async Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
+    {
+        var validation = await _loginValidator.ValidateAsync(request, cancellationToken);
+        if (!validation.IsValid)
+            throw new ValidationException(validation.Errors);
+
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user is null)
+            throw new UnauthorizedException("Invalid credentials.");
+
+        var valid = await _userManager.CheckPasswordAsync(user, request.Password);
+        if (!valid)
+            throw new UnauthorizedException("Invalid credentials.");
+
+        var (token, expires) = _jwt.Generate(user.Id, user.Email, user.DisplayName);
+        return new AuthResponse(token, expires, user.DisplayName, user.Email);
+    }
+}

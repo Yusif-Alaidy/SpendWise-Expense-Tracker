@@ -1,0 +1,19 @@
+﻿using SpendWise.Domain.Enums;
+
+namespace SpendWise.Application.Transactions;
+
+public class TransactionQueryParams
+{
+    public int Page { get; set; } = 1;
+    public int PageSize { get; set; } = 20;
+    public string? Search { get; set; }
+    public int? AccountId { get; set; }
+    public int? CategoryId { get; set; }
+    public TransactionType? Type { get; set; }
+    public DateOnly? From { get; set; }
+    public DateOnly? To { get; set; }
+    public decimal? MinAmount { get; set; }
+    public decimal? MaxAmount { get; set; }
+    public string SortBy { get; set; } = "date";
+    public string SortDir { get; set; } = "desc";
+}

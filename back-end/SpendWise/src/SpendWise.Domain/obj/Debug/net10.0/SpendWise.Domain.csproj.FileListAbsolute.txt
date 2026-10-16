@@ -9,4 +9,5 @@ D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWis
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Debug\net10.0\refint\SpendWise.Domain.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Debug\net10.0\SpendWise.Domain.pdb
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Debug\net10.0\ref\SpendWise.Domain.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Debug\net10.0\SpendWise.Domain.sourcelink.json
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Debug\net10.0\SpendWis.C970754B.Up2Date

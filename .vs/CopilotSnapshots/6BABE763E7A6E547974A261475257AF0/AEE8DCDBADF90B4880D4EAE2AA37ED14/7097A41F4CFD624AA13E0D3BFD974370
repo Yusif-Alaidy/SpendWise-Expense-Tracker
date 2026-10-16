@@ -1,0 +1,34 @@
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using SpendWise.Infrastructure.Persistence;
+using SpendWise.Application.Common.Interfaces;
+
+namespace SpendWise.Tests.Infrastructure;
+
+public class TestDb : IAsyncDisposable
+{
+    public TestAppDbContext Context { get; }
+    public FakeCurrentUser CurrentUser { get; }
+    private readonly SqliteConnection _connection;
+
+    public TestDb()
+    {
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
+        var options = new DbContextOptionsBuilder<TestAppDbContext>()
+            .UseSqlite(_connection)
+            .Options;
+
+        CurrentUser = new FakeCurrentUser();
+        Context = new TestAppDbContext(options, CurrentUser);
+        Context.Database.EnsureCreated();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await Context.DisposeAsync();
+        _connection.Close();
+        _connection.Dispose();
+    }
+}

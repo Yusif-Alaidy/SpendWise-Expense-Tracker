@@ -1,0 +1,60 @@
+﻿@SpendWise.Api_HostAddress = http://localhost:5075
+
+GET {{SpendWise.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+### Register - success
+POST {{SpendWise.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "displayName": "Test User",
+  "password": "Password1"
+}
+
+### Register - duplicate
+POST {{SpendWise.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "displayName": "Test User",
+  "password": "Password1"
+}
+
+### Register - weak password
+POST {{SpendWise.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "weak@example.com",
+  "displayName": "Weak",
+  "password": "weak"
+}
+
+### Login - success
+POST {{SpendWise.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Password1"
+}
+
+### Login - wrong password
+POST {{SpendWise.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "WrongPass1"
+}
+
+### Me - no token
+GET {{SpendWise.Api_HostAddress}}/api/auth/me
+
+### Me - with token
+GET {{SpendWise.Api_HostAddress}}/api/auth/me
+Authorization: Bearer {{token}}
+

@@ -1,0 +1,25 @@
+﻿{
+  "ConnectionStrings": {
+    //"DefaultConnection": "Server=db73190.public.databaseasp.net; Database=db73190; User Id=db73190; Password=9Pa!@6ZwXs7_; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;"
+    "DefaultConnection": "Server=.; Database=spendWise; TrustServerCertificate=True; Trusted_connection=True;"
+
+  },
+  "Jwt": {
+    "Issuer": "SpendWise.Api",
+    "Audience": "SpendWise.Client",
+    "ExpiryMinutes": 60
+  },
+  "Seeding": {
+    "Enabled": false,
+    "TransactionCount": 300
+  },
+  "Budgets": {
+    "TimeZoneId": "Africa/Cairo"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}

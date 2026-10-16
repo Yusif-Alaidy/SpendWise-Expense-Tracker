@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SpendWise.Domain.Entities;
+using SpendWise.Infrastructure.Identity;
 
 namespace SpendWise.Infrastructure.Persistence.Configurations;
 
@@ -19,5 +20,10 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
                .WithOne(t => t.Account)
                .HasForeignKey(t => t.AccountId)
                .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<ApplicationUser>()
+        .WithMany()
+        .HasForeignKey(e => e.UserId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
 }

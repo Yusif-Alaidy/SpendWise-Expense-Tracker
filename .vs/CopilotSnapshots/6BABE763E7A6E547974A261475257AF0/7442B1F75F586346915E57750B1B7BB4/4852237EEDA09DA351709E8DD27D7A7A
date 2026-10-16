@@ -1,0 +1,22 @@
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using SpendWise.Application.Common.Interfaces;
+
+namespace SpendWise.Application.Accounts.Validators;
+
+public class CreateUpdateAccountValidator<T> : AbstractValidator<T> where T : class
+{
+    public CreateUpdateAccountValidator()
+    {
+        RuleFor("Name")
+            .NotEmpty()
+            .MaximumLength(100)
+            .Must(name => name is string s && s.Trim().Length > 0).WithMessage("Name must not be empty or whitespace.");
+
+        RuleFor("Type").IsInEnum();
+
+        RuleFor("OpeningBalance")
+            .InclusiveBetween(-999999999.99m, 999999999.99m)
+            .ScalePrecision(2, 18).WithMessage("OpeningBalance must have at most 2 decimal places and precision 18.");
+    }
+}

@@ -1,0 +1,230 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using SpendWise.Domain.Defaults;
+using SpendWise.Domain.Enums;
+using SpendWise.Infrastructure.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SpendWise.Infrastructure.Persistence.Seeding;
+
+public class DevelopmentDataSeeder
+{
+    private readonly UserManager<ApplicationUser> _users;
+    private readonly AppDbContext _db;
+    private readonly IConfiguration _config;
+    private readonly ILogger<DevelopmentDataSeeder> _logger;
+    private readonly TimeProvider _clock;
+
+    public DevelopmentDataSeeder(
+        UserManager<ApplicationUser> users,
+        AppDbContext db,
+        IConfiguration config,
+        ILogger<DevelopmentDataSeeder> logger,
+        TimeProvider clock)
+    {
+        _users = users;
+        _db = db;
+        _config = config;
+        _logger = logger;
+        _clock = clock;
+    }
+
+    public async Task SeedAsync(CancellationToken ct = default)
+    {
+        var enabled = _config.GetValue<bool>("Seeding:Enabled");
+        if (!enabled)
+            return;
+
+        var demoPassword = _config.GetValue<string?>("Seeding:DemoPassword");
+        if (string.IsNullOrWhiteSpace(demoPassword))
+        {
+            _logger.LogWarning("Seeding skipped: Seeding:DemoPassword is not configured.");
+            return;
+        }
+
+        var conn = _db.Database.GetDbConnection();
+        _logger.LogInformation("Seeding database. DataSource={DataSource}; Database={Database}", conn.DataSource, conn.Database);
+
+        const string demoEmail = "demo@spendwise.local";
+        var existing = await _users.FindByEmailAsync(demoEmail);
+
+        ApplicationUser user;
+        if (existing is null)
+        {
+            // Begin transaction so user + categories + accounts + transactions are atomic
+            await using var transaction = await _db.Database.BeginTransactionAsync(ct);
+
+            user = new ApplicationUser
+            {
+                UserName = demoEmail,
+                Email = demoEmail,
+                DisplayName = "Demo User"
+            };
+
+            var createResult = await _users.CreateAsync(user, demoPassword);
+            if (!createResult.Succeeded)
+            {
+                var errors = string.Join(';', createResult.Errors.Select(e => e.Description));
+                throw new InvalidOperationException($"Failed to create demo user: {errors}");
+            }
+
+            // Categories and accounts
+            var categories = DefaultCategories.Create(user.Id).ToList();
+            _db.Categories.AddRange(categories);
+
+            var accounts = new List<Domain.Entities.Account>
+            {
+                new Domain.Entities.Account { UserId = user.Id, Name = "Cash", Type = AccountType.Cash, OpeningBalance = 2000m },
+                new Domain.Entities.Account { UserId = user.Id, Name = "Bank", Type = AccountType.Bank, OpeningBalance = 15000m },
+                new Domain.Entities.Account { UserId = user.Id, Name = "Credit Card", Type = AccountType.Card, OpeningBalance = -500m }
+            };
+            _db.Accounts.AddRange(accounts);
+
+            await _db.SaveChangesAsync(ct);
+
+            // Transactions generation
+            var total = _config.GetValue<int?>("Seeding:TransactionCount") ?? 300;
+            var rnd = new Random(42);
+            var today = DateOnly.FromDateTime(_clock.GetUtcNow().UtcDateTime);
+
+            var transactions = new List<Domain.Entities.Transaction>();
+
+            // Helper to pick category by name and type
+            Domain.Entities.Category? FindCategory(string name, TransactionType type)
+                => categories.FirstOrDefault(c => c.Type == type && string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
+
+            var bank = accounts.First(a => a.Name == "Bank");
+            var cash = accounts.First(a => a.Name == "Cash");
+            var card = accounts.First(a => a.Name == "Credit Card");
+
+            // Income: Salary monthly for 6 months
+            for (int i = 0; i < 6; i++)
+            {
+                var monthDate = today.AddMonths(-i);
+                var cat = FindCategory("Salary", TransactionType.Income)!;
+                var amount = Math.Round((decimal)(18000 + rnd.NextDouble() * 4000), 2);
+                transactions.Add(new Domain.Entities.Transaction { Account = bank, Category = cat, Amount = amount, Type = TransactionType.Income, Date = monthDate, Note = "Salary", CreatedAt = DateTime.UtcNow });
+            }
+
+            // Freelance ~6
+            for (int i = 0; i < 6; i++)
+            {
+                var d = today.AddDays(-rnd.Next(0, 180));
+                var cat = FindCategory("Freelance", TransactionType.Income)!;
+                var amount = Math.Round((decimal)(1500 + rnd.NextDouble() * 4500), 2);
+                transactions.Add(new Domain.Entities.Transaction { Account = bank, Category = cat, Amount = amount, Type = TransactionType.Income, Date = d, Note = "Freelance", CreatedAt = DateTime.UtcNow });
+            }
+
+            // Gifts ~3
+            for (int i = 0; i < 3; i++)
+            {
+                var d = today.AddDays(-rnd.Next(0, 180));
+                var cat = FindCategory("Gift", TransactionType.Income)!;
+                var amount = Math.Round((decimal)(200 + rnd.NextDouble() * 1800), 2);
+                transactions.Add(new Domain.Entities.Transaction { Account = bank, Category = cat, Amount = amount, Type = TransactionType.Income, Date = d, Note = "Gift", CreatedAt = DateTime.UtcNow });
+            }
+
+            // Rent monthly on bank for last 6 months
+            for (int i = 0; i < 6; i++)
+            {
+                var monthDate = today.AddMonths(-i);
+                var cat = FindCategory("Rent", TransactionType.Expense)!;
+                transactions.Add(new Domain.Entities.Transaction { Account = bank, Category = cat, Amount = 6000m, Type = TransactionType.Expense, Date = monthDate, Note = "Rent", CreatedAt = DateTime.UtcNow });
+            }
+
+            // Remaining transactions: fill until total
+            var expenseCategories = categories.Where(c => c.Type == TransactionType.Expense).ToList();
+            var expenseNotes = new Dictionary<string, string[]>
+            {
+                ["Food"] = new[] { "Groceries", "Lunch", "Coffee" },
+                ["Transport"] = new[] { "Uber ride", "Fuel", "Bus" },
+                ["Bills"] = new[] { "Electricity bill", "Internet bill", "Water bill" },
+                ["Shopping"] = new[] { "Clothes", "New shoes", "Electronics" },
+                ["Health"] = new[] { "Pharmacy", "Doctor visit" },
+                ["Entertainment"] = new[] { "Cinema", "Concert", "Games" },
+                ["Education"] = new[] { "Books", "Course" },
+                ["Other"] = new[] { "Misc" }
+            };
+
+            while (transactions.Count < total)
+            {
+                var d = today.AddDays(-rnd.Next(0, 180));
+                var cat = expenseCategories[rnd.Next(expenseCategories.Count)];
+
+                decimal amount = cat.Name switch
+                {
+                    "Food" => Math.Round((decimal)(30 + rnd.NextDouble() * 370), 2),
+                    "Transport" => Math.Round((decimal)(20 + rnd.NextDouble() * 230), 2),
+                    "Bills" => Math.Round((decimal)(150 + rnd.NextDouble() * 750), 2),
+                    "Shopping" => Math.Round((decimal)(200 + rnd.NextDouble() * 2800), 2),
+                    "Health" => Math.Round((decimal)(100 + rnd.NextDouble() * 1400), 2),
+                    "Entertainment" => Math.Round((decimal)(100 + rnd.NextDouble() * 700), 2),
+                    "Education" => Math.Round((decimal)(300 + rnd.NextDouble() * 2200), 2),
+                    _ => Math.Round((decimal)(20 + rnd.NextDouble() * 480), 2)
+                };
+
+                // Choose account: more small on Cash
+                var r = rnd.NextDouble();
+                Domain.Entities.Account chosen = r < 0.6 ? cash : (r < 0.9 ? bank : card);
+
+                string? note = null;
+                if (rnd.NextDouble() > 0.2 && expenseNotes.TryGetValue(cat.Name, out var list))
+                    note = list[rnd.Next(list.Length)];
+
+                transactions.Add(new Domain.Entities.Transaction { Account = chosen, Category = cat, Amount = amount, Type = TransactionType.Expense, Date = d, Note = note, CreatedAt = DateTime.UtcNow });
+            }
+
+            _db.Transactions.AddRange(transactions);
+            await _db.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
+
+            _logger.LogInformation("Seeded {Count} transactions for demo user.", transactions.Count);
+        }
+        else
+        {
+            user = existing;
+        }
+
+        // Second phase: ensure demo tags exist and attach to some transactions (idempotent)
+        var existingTagCount = await _db.Tags.IgnoreQueryFilters().CountAsync(t => t.UserId == user.Id, ct);
+        if (existingTagCount == 0)
+        {
+            var demoTags = new[] { "Eid", "Work", "Family", "Subscription", "Trip", "Urgent" }
+                .Select(n => new Domain.Entities.Tag { UserId = user.Id, Name = n })
+                .ToList();
+
+            _db.Tags.AddRange(demoTags);
+            await _db.SaveChangesAsync(ct);
+
+            // Attach 1-2 random tags to about 35% of transactions
+            var rnd2 = new Random(42);
+            var txIds = await _db.Transactions.IgnoreQueryFilters().Where(t => t.Account.UserId == user.Id).Select(t => t.Id).ToListAsync(ct);
+            var tagIds = demoTags.Select(t => t.Id).ToArray();
+            var toModify = txIds.Where((_, idx) => (idx % 100) < 35).ToList(); // deterministic approx 35%
+
+            var links = new List<Domain.Entities.TransactionTag>();
+            foreach (var txId in toModify)
+            {
+                var take = rnd2.Next(1, 3);
+                var chosen = new HashSet<int>();
+                for (int i = 0; i < take; i++)
+                {
+                    var tagId = tagIds[rnd2.Next(tagIds.Length)];
+                    if (chosen.Add(tagId))
+                        links.Add(new Domain.Entities.TransactionTag { TransactionId = txId, TagId = tagId });
+                }
+            }
+
+            if (links.Count > 0)
+            {
+                _db.TransactionTags.AddRange(links);
+                await _db.SaveChangesAsync(ct);
+            }
+        }
+    }
+}

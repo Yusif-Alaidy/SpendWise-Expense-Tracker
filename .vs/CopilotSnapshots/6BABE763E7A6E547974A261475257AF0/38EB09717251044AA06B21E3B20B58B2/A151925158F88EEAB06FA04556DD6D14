@@ -1,0 +1,191 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using FluentValidation;
+using FluentValidation.Results;
+using SpendWise.Application.Common.Interfaces;
+using SpendWise.Application.Common;
+using SpendWise.Domain.Entities;
+using SpendWise.Domain.Enums;
+
+namespace SpendWise.Application.Transactions;
+
+public class TransactionService : ITransactionService
+{
+    private readonly IAppDbContext _db;
+    private readonly IValidator<CreateTransactionRequest> _createValidator;
+    private readonly IValidator<UpdateTransactionRequest> _updateValidator;
+    private readonly IValidator<TransactionQueryParams> _queryValidator;
+    private readonly ILogger<TransactionService> _logger;
+
+    public TransactionService(
+        IAppDbContext db,
+        IValidator<CreateTransactionRequest> createValidator,
+        IValidator<UpdateTransactionRequest> updateValidator,
+        IValidator<TransactionQueryParams> queryValidator,
+        ILogger<TransactionService> logger)
+    {
+        _db = db;
+        _createValidator = createValidator;
+        _updateValidator = updateValidator;
+        _queryValidator = queryValidator;
+        _logger = logger;
+    }
+
+    public async Task<PagedResult<TransactionDto>> GetPagedAsync(TransactionQueryParams query, CancellationToken cancellationToken = default)
+    {
+        await _queryValidator.ValidateAndThrowAsync(query, cancellationToken);
+
+        var q = _db.Transactions.AsNoTracking().AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(query.Search))
+        {
+            var s = query.Search.Trim();
+            q = q.Where(t => t.Note != null && EF.Functions.Like(t.Note, "%" + s + "%"));
+        }
+
+        if (query.AccountId.HasValue)
+            q = q.Where(t => t.AccountId == query.AccountId.Value);
+
+        if (query.CategoryId.HasValue)
+            q = q.Where(t => t.CategoryId == query.CategoryId.Value);
+
+        if (query.Type.HasValue)
+            q = q.Where(t => t.Type == query.Type.Value);
+
+        if (query.From.HasValue)
+            q = q.Where(t => t.Date >= query.From.Value);
+        if (query.To.HasValue)
+            q = q.Where(t => t.Date <= query.To.Value);
+
+        if (query.MinAmount.HasValue)
+            q = q.Where(t => t.Amount >= query.MinAmount.Value);
+        if (query.MaxAmount.HasValue)
+            q = q.Where(t => t.Amount <= query.MaxAmount.Value);
+
+        var totalCount = await q.CountAsync(cancellationToken);
+
+        // Ordering
+        bool asc = string.Equals(query.SortDir, "asc", StringComparison.OrdinalIgnoreCase);
+        q = (query.SortBy ?? "date").ToLower() switch
+        {
+            "amount" => asc ? q.OrderBy(t => t.Amount).ThenBy(t => t.Id) : q.OrderByDescending(t => t.Amount).ThenByDescending(t => t.Id),
+            "category" => asc ? q.OrderBy(t => t.Category.Name).ThenBy(t => t.Id) : q.OrderByDescending(t => t.Category.Name).ThenByDescending(t => t.Id),
+            _ => asc ? q.OrderBy(t => t.Date).ThenBy(t => t.Id) : q.OrderByDescending(t => t.Date).ThenByDescending(t => t.Id)
+        };
+
+        var skip = (query.Page - 1) * query.PageSize;
+        var pageItems = await q.Skip(skip).Take(query.PageSize)
+            .Select(t => new TransactionDto(
+                t.Id,
+                t.AccountId,
+                t.Account.Name,
+                t.CategoryId,
+                t.Category.Name,
+                t.Category.Color,
+                t.Amount,
+                t.Type,
+                t.Date,
+                t.Note,
+                t.CreatedAt
+            ))
+            .ToListAsync(cancellationToken);
+
+        var totalPages = totalCount == 0 ? 0 : (int)Math.Ceiling(totalCount / (double)query.PageSize);
+
+        return new PagedResult<TransactionDto>(pageItems, query.Page, query.PageSize, totalCount, totalPages);
+    }
+
+    public async Task<TransactionDto> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var t = await _db.Transactions.AsNoTracking()
+            .Where(x => x.Id == id)
+            .Select(t => new TransactionDto(t.Id, t.AccountId, t.Account.Name, t.CategoryId, t.Category.Name, t.Category.Color, t.Amount, t.Type, t.Date, t.Note, t.CreatedAt))
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (t is null)
+            throw new SpendWise.Application.Common.Exceptions.NotFoundException("Transaction not found.");
+
+        return t;
+    }
+
+    public async Task<TransactionDto> CreateAsync(CreateTransactionRequest request, CancellationToken cancellationToken = default)
+    {
+        await _createValidator.ValidateAndThrowAsync(request, cancellationToken);
+
+        // Verify account and category exist (query filters enforce ownership)
+        var account = await _db.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.AccountId, cancellationToken);
+        if (account is null)
+            throw new ValidationException(new[] { new ValidationFailure("AccountId", "Account does not exist.") });
+
+        var category = await _db.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
+        if (category is null)
+            throw new ValidationException(new[] { new ValidationFailure("CategoryId", "Category does not exist.") });
+
+        if (category.Type != request.Type)
+            throw new ValidationException(new[] { new ValidationFailure("CategoryId", "Category type must match the transaction type.") });
+
+        var note = string.IsNullOrWhiteSpace(request.Note) ? null : request.Note.Trim();
+
+        var entity = new Transaction
+        {
+            AccountId = request.AccountId,
+            CategoryId = request.CategoryId,
+            Amount = request.Amount,
+            Type = request.Type,
+            Date = request.Date,
+            Note = note,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _db.Transactions.Add(entity);
+        await _db.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Transaction created {TransactionId}", entity.Id);
+
+        // Return DTO with names from account/category we already loaded
+        return new TransactionDto(entity.Id, entity.AccountId, account.Name, entity.CategoryId, category.Name, category.Color, entity.Amount, entity.Type, entity.Date, entity.Note, entity.CreatedAt);
+    }
+
+    public async Task UpdateAsync(int id, UpdateTransactionRequest request, CancellationToken cancellationToken = default)
+    {
+        await _update_validator.ValidateAndThrowAsync(request, cancellationToken);
+
+        var entity = await _db.Transactions.FindAsync(new object[] { id }, cancellationToken);
+        if (entity is null)
+            throw new SpendWise.Application.Common.Exceptions.NotFoundException("Transaction not found.");
+
+        var accountExists = await _db.Accounts.AnyAsync(a => a.Id == request.AccountId, cancellationToken);
+        if (!accountExists)
+            throw new ValidationException(new[] { new ValidationFailure("AccountId", "Account does not exist.") });
+
+        var category = await _db.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
+        if (category is null)
+            throw new ValidationException(new[] { new ValidationFailure("CategoryId", "Category does not exist.") });
+
+        if (category.Type != request.Type)
+            throw new ValidationException(new[] { new ValidationFailure("CategoryId", "Category type must match the transaction type.") });
+
+        entity.AccountId = request.AccountId;
+        entity.CategoryId = request.CategoryId;
+        entity.Amount = request.Amount;
+        entity.Type = request.Type;
+        entity.Date = request.Date;
+        entity.Note = string.IsNullOrWhiteSpace(request.Note) ? null : request.Note.Trim();
+
+        await _db.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Transaction updated {TransactionId}", entity.Id);
+    }
+
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var entity = await _db.Transactions.FindAsync(new object[] { id }, cancellationToken);
+        if (entity is null)
+            throw new SpendWise.Application.Common.Exceptions.NotFoundException("Transaction not found.");
+
+        _db.Transactions.Remove(entity);
+        await _db.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Transaction deleted {TransactionId}", entity.Id);
+    }
+}

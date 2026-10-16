@@ -1,0 +1,157 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole;
+using SpendWise.Api.Services;
+using SpendWise.Application.Common.Interfaces;
+using SpendWise.Application;
+using SpendWise.Infrastructure;
+using SpendWise.Infrastructure.Authentication;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+// Replace default logging with Serilog configuration sourced from appsettings
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext();
+});
+
+// Add services to the container.
+
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new SpendWise.Api.ModelBinding.DateOnlyModelBinderProvider());
+})
+.AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    // DateOnly JSON converter
+    o.JsonSerializerOptions.Converters.Add(new SpendWise.Api.Json.DateOnlyJsonConverter());
+});
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddInfrastructure(builder.Configuration);
+// Bind BudgetOptions with validation
+builder.Services.AddOptions<SpendWise.Application.Budgets.BudgetOptions>()
+    .Bind(builder.Configuration.GetSection("Budgets"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+builder.Services.AddApplication();
+
+// JWT Authentication
+// Configure JwtBearer using validated JwtSettings options
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddOptions<Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+    .Configure<Microsoft.Extensions.Options.IOptions<SpendWise.Infrastructure.Authentication.JwtSettings>>((options, jwt) =>
+    {
+        var j = jwt.Value;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = j.Issuer,
+            ValidateAudience = true,
+            ValidAudience = j.Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(j.Key)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+builder.Services.AddAuthentication().AddJwtBearer();
+
+
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
+
+// Health checks
+builder.Services.AddHealthChecks().AddDbContextCheck<SpendWise.Infrastructure.Persistence.AppDbContext>();
+
+// CORS policy
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        if (corsOrigins.Length > 0)
+            policy.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("Location");
+        else
+            policy.AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
+var app = builder.Build();
+// Configure Serilog bootstrap logger and host integration
+Log.Logger = new Serilog.LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+
+try
+{
+    Log.Information("Starting web host");
+
+    // Configure the HTTP request pipeline.
+    // Global exception handling - use a centralized handler that returns RFC7807 ProblemDetails
+    app.UseExceptionHandler(new Microsoft.AspNetCore.Builder.ExceptionHandlerOptions
+    {
+        ExceptionHandler = async ctx => await SpendWise.Api.Middleware.GlobalExceptionHandler.HandleAsync(ctx)
+    });
+
+    // Serilog request logging
+    app.UseSerilogRequestLogging(opts =>
+    {
+        opts.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+        {
+            var user = httpContext.User;
+            if (user?.Identity?.IsAuthenticated == true)
+            {
+                var id = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(id))
+                    diagnosticContext.Set("UserId", id);
+            }
+        };
+    });
+
+    if (app.Environment.IsDevelopment())
+    {
+        // Run development-only seeding when enabled
+        using var scope = app.Services.CreateScope();
+        var seeder = scope.ServiceProvider.GetService<SpendWise.Infrastructure.Persistence.Seeding.DevelopmentDataSeeder>();
+        if (seeder is not null)
+        {
+            await seeder.SeedAsync();
+        }
+        app.MapOpenApi();
+    }
+
+    app.UseHttpsRedirection();
+
+    // CORS
+    var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+    if (corsOrigins.Length == 0 && !app.Environment.IsDevelopment())
+    {
+        Log.Warning("No CORS origins configured for non-development environment. Requests from browsers will be blocked.");
+    }
+    // Ensure CORS policy named "Frontend" is applied. Placeholder to verify policy presence.
+    app.UseCors("Frontend");
+
+    // Jwt Authentication and Authorization
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    // Health
+    app.MapHealthChecks("/health").AllowAnonymous();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    throw;
+}
+finally
+{
+    Log.CloseAndFlush();
+}

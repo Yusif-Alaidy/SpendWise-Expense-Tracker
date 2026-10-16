@@ -1,0 +1,14 @@
+﻿using FluentValidation;
+
+namespace SpendWise.Application.Tags.Validators;
+
+public class TagValidator<T> : AbstractValidator<T> where T : class
+{
+    public TagValidator()
+    {
+        RuleFor("Name")
+            .NotEmpty()
+            .MaximumLength(50)
+            .Must(n => n is string s && s.Trim().Length > 0).WithMessage("Name must not be empty or whitespace.");
+    }
+}

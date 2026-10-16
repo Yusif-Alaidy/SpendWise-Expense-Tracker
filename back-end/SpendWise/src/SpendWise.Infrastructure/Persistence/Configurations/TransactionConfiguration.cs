@@ -11,7 +11,10 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.Property(t => t.Type).HasConversion<string>().HasMaxLength(20);
         builder.Property(t => t.Note).HasMaxLength(250);
 
-        builder.HasIndex(t => new { t.UserId, t.Date });
-        builder.HasIndex(t => new { t.UserId, t.CategoryId });
+        // Use scalar properties on the Transaction entity for indexes.
+        // Transaction no longer contains a UserId property; index by AccountId instead.
+        // Accessing navigation properties in index expressions is not supported by EF Core.
+        builder.HasIndex(t => new { t.AccountId, t.Date });
+        builder.HasIndex(t => new { t.AccountId, t.CategoryId });
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpendWise.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd3987bd0b8702b6195e2469551619cbafcac897")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fae88dc93d4a58933e79be7cd8bd77e61e8d5e3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpendWise.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpendWise.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -13,7 +13,7 @@ public class Transaction : BaseEntity
     public Category Category { get; set; } = null!;
 
     public decimal Amount { get; set; }
-    public TransactionTag Type { get; set; }
+    public TransactionType Type { get; set; }
     public DateOnly Date { get; set; }
     public string? Note { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

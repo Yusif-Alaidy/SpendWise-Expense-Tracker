@@ -1,0 +1,61 @@
+﻿using FluentValidation;
+using FluentValidation.Results;
+using SpendWise.Application.Common;
+using SpendWise.Application.Common.Interfaces;
+using SpendWise.Domain.Enums;
+
+namespace SpendWise.Application.Transactions.Validators;
+
+public class TransactionCreateUpdateValidator<T> : AbstractValidator<T> where T : class
+{
+    public TransactionCreateUpdateValidator(TimeProvider timeProvider)
+    {
+        var todayUtc = timeProvider.GetUtcNow().Date;
+        RuleFor("Amount")
+            .GreaterThan(0m)
+            .LessThanOrEqualTo(999999999.99m)
+            .ScalePrecision(2, 18).WithMessage("Amount must have at most 2 decimal places and precision 18.");
+
+        RuleFor("Type").IsInEnum();
+
+        RuleFor("Date")
+            .Must(d => d is DateOnly date && date >= new DateOnly(2000,1,1) && date <= todayUtc.AddDays(1))
+            .WithMessage("Date must be between 2000-01-01 and tomorrow.");
+
+        RuleFor("Note").MaximumLength(250);
+
+        RuleFor("AccountId").GreaterThan(0);
+        RuleFor("CategoryId").GreaterThan(0);
+    }
+}
+
+public class TransactionQueryValidator : AbstractValidator<TransactionQueryParams>
+{
+    public TransactionQueryValidator()
+    {
+        RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
+        RuleFor(x => x.PageSize).InclusiveBetween(1, 100);
+
+        RuleFor(x => x.SortBy).Must(s => string.IsNullOrEmpty(s) || new[] { "date", "amount", "category" }.Contains(s.ToLower()))
+            .WithMessage("SortBy must be one of: date, amount, category.");
+
+        RuleFor(x => x.SortDir).Must(s => string.IsNullOrEmpty(s) || new[] { "asc", "desc" }.Contains(s.ToLower()))
+            .WithMessage("SortDir must be 'asc' or 'desc'.");
+
+        RuleFor(x => x.Search).MaximumLength(100);
+
+        RuleFor(x => x).Custom((p, ctx) =>
+        {
+            if (p.From.HasValue && p.To.HasValue && p.From > p.To)
+                ctx.AddFailure(new ValidationFailure("From", "From must be less than or equal to To."));
+
+            if (p.MinAmount.HasValue && p.MaxAmount.HasValue && p.MinAmount > p.MaxAmount)
+                ctx.AddFailure(new ValidationFailure("MinAmount", "MinAmount must be less than or equal to MaxAmount."));
+
+            if (p.MinAmount.HasValue && p.MinAmount < 0)
+                ctx.AddFailure(new ValidationFailure("MinAmount", "MinAmount must be >= 0."));
+            if (p.MaxAmount.HasValue && p.MaxAmount < 0)
+                ctx.AddFailure(new ValidationFailure("MaxAmount", "MaxAmount must be >= 0."));
+        });
+    }
+}

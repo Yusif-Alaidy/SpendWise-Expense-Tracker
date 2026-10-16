@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("b406bad1-66d4-4dd2-ab1a-9c5ae1591fca")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SpendWise.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd3987bd0b8702b6195e2469551619cbafcac897")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fae88dc93d4a58933e79be7cd8bd77e61e8d5e3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SpendWise.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SpendWise.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,49 @@
+﻿// SpendWise.Infrastructure/DependencyInjection.cs
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using SpendWise.Application.Common.Interfaces;
+using SpendWise.Application.Auth;
+using SpendWise.Infrastructure.Authentication;
+using SpendWise.Infrastructure.Identity;
+using SpendWise.Infrastructure.Persistence;
+
+namespace SpendWise.Infrastructure;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration
+        )
+    {
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+        // Expose AppDbContext via IAppDbContext for application services
+        services.AddScoped<SpendWise.Application.Common.Interfaces.IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
+
+        services.AddIdentityCore<ApplicationUser>(options =>
+        {
+            options.Password.RequiredLength = 8;
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireNonAlphanumeric = false;
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<AppDbContext>();
+
+        // Jwt
+        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.AddSingleton(TimeProvider.System);
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        // Authentication services
+        services.AddScoped<IAuthService, AuthService>();
+        // Development data seeder
+        services.AddScoped<SpendWise.Infrastructure.Persistence.Seeding.DevelopmentDataSeeder>();
+
+
+        return services;
+    }
+}

@@ -1,0 +1,44 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SpendWise.Application.Budgets;
+using SpendWise.Application.Budgets.Dtos;
+
+namespace SpendWise.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class BudgetsController : ControllerBase
+{
+    private readonly IBudgetService _service;
+
+    public BudgetsController(IBudgetService service)
+    {
+        _service = service;
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(BudgetOverviewDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get([FromQuery] BudgetQueryParams query, CancellationToken cancellationToken)
+    {
+        var res = await _service.GetOverviewAsync(query, cancellationToken);
+        return Ok(res);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(typeof(BudgetStatusDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Upsert([FromBody] UpsertBudgetRequest request, CancellationToken cancellationToken)
+    {
+        var res = await _service.UpsertAsync(request, cancellationToken);
+        return Ok(res);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        await _service.DeleteAsync(id, cancellationToken);
+        return NoContent();
+    }
+}

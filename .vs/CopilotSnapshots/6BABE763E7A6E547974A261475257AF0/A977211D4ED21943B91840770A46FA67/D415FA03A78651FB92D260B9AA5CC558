@@ -1,0 +1,6 @@
+﻿namespace SpendWise.Application.Budgets;
+
+public class BudgetOptions
+{
+    public string TimeZoneId { get; set; } = "Africa/Cairo";
+}

@@ -1,0 +1,18 @@
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace SpendWise.Application;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        // Register FluentValidation validators from this assembly
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        // Register application services
+        services.AddScoped<SpendWise.Application.Accounts.IAccountService, SpendWise.Application.Accounts.AccountService>();
+        services.AddScoped<SpendWise.Application.Categories.ICategoryService, SpendWise.Application.Categories.CategoryService>();
+        services.AddScoped<SpendWise.Application.Transactions.ITransactionService, SpendWise.Application.Transactions.TransactionService>();
+        return services;
+    }
+}

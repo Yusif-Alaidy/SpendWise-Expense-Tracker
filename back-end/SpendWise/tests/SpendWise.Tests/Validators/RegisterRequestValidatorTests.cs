@@ -1,0 +1,29 @@
+using FluentValidation;
+using Xunit;
+using SpendWise.Application.Auth;
+using SpendWise.Application.Auth.Validators;
+
+namespace SpendWise.Tests.Validators;
+
+public class RegisterRequestValidatorTests
+{
+    private readonly RegisterRequestValidator _validator = new RegisterRequestValidator();
+
+    [Fact]
+    public void ValidRequest_Passes()
+    {
+        var req = new RegisterRequest("user@example.com", "Display", "Password1");
+        var res = _validator.Validate(req);
+        Assert.True(res.IsValid);
+    }
+
+    [Theory]
+    [InlineData("short", "Display", "Password1")]
+    [InlineData("user@example.com", "D", "Password1")]
+    public void InvalidInputs_Fail(string email, string display, string password)
+    {
+        var req = new RegisterRequest(email, display, password);
+        var res = _validator.Validate(req);
+        Assert.False(res.IsValid);
+    }
+}

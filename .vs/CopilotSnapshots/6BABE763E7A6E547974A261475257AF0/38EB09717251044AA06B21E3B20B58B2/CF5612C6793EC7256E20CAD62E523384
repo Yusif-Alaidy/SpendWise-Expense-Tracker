@@ -1,0 +1,34 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using FluentValidation;
+using FluentValidation.Results;
+using SpendWise.Application.Common.Interfaces;
+using SpendWise.Application.Common;
+using SpendWise.Domain.Enums;
+
+namespace SpendWise.Application.Transactions;
+
+public class TransactionService : ITransactionService
+{
+    private readonly IAppDbContext _db;
+    private readonly IValidator<CreateTransactionRequest> _createValidator;
+    private readonly IValidator<UpdateTransactionRequest> _updateValidator;
+    private readonly IValidator<TransactionQueryParams> _queryValidator;
+    private readonly ILogger<TransactionService> _logger;
+
+    public TransactionService(
+        IAppDbContext db,
+        IValidator<CreateTransactionRequest> createValidator,
+        IValidator<UpdateTransactionRequest> updateValidator,
+        IValidator<TransactionQueryParams> queryValidator,
+        ILogger<TransactionService> logger)
+    {
+        _db = db;
+        _createValidator = createValidator;
+        _update_validator = updateValidator; // placeholder to be replaced
+        _queryValidator = queryValidator;
+        _logger = logger;
+    }
+
+    // NOTE: temporary fix; will update in patch
+}

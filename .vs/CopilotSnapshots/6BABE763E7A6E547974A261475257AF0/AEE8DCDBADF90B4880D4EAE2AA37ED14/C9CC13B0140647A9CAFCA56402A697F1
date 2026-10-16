@@ -1,0 +1,33 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SpendWise.Infrastructure.Persistence;
+using SpendWise.Application.Common.Interfaces;
+
+namespace SpendWise.Tests.Infrastructure;
+
+public class TestAppDbContext : AppDbContext
+{
+    public TestAppDbContext(DbContextOptions<TestAppDbContext> options, ICurrentUserService currentUser)
+        : base(options as DbContextOptions<SpendWise.Infrastructure.Persistence.AppDbContext> ?? throw new ArgumentException("options"), currentUser)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        // SQLite has limited support for decimal; convert decimals to double in this test context
+        var converter = new ValueConverter<decimal, double>(v => (double)v, v => (decimal)v);
+        var nullableConverter = new ValueConverter<decimal?, double?>(v => v.HasValue ? (double?)v.Value : null, v => v.HasValue ? (decimal?)v.Value : null);
+
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            foreach (var prop in entityType.GetProperties().Where(p => p.ClrType == typeof(decimal)))
+                prop.SetValueConverter(converter);
+
+            foreach (var prop in entityType.GetProperties().Where(p => p.ClrType == typeof(decimal?)))
+                prop.SetValueConverter(nullableConverter);
+        }
+    }
+}

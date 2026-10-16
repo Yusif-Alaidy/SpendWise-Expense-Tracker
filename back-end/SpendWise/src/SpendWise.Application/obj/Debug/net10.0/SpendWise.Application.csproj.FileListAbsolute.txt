@@ -13,3 +13,4 @@ D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWis
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\refint\SpendWise.Application.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.pdb
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\ref\SpendWise.Application.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Application\obj\Debug\net10.0\SpendWise.Application.sourcelink.json

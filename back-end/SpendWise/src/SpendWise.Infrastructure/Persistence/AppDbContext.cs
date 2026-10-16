@@ -8,7 +8,7 @@ using SpendWise.Infrastructure.Identity;
 
 namespace SpendWise.Infrastructure.Persistence;
 
-public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, SpendWise.Application.Common.Interfaces.IAppDbContext
 {
     private readonly ICurrentUserService _currentUser;
 
@@ -25,8 +25,12 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     public DbSet<TransactionTag> TransactionTags => Set<TransactionTag>();
     public DbSet<Budget> Budgets => Set<Budget>();
 
-    // Read at query time, so each request's context uses its own user
-    private Guid? CurrentUserId => _currentUser.UserId;
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        => base.SaveChangesAsync(cancellationToken);
+
+    // Read at query time, so each request's context uses its own user.
+    // Use safe navigation because design-time DbContext creation may not supply ICurrentUserService.
+    private Guid? CurrentUserId => _currentUser?.UserId;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

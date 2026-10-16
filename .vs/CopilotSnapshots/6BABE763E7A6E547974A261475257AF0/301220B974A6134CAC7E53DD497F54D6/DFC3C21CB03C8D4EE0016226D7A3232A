@@ -1,0 +1,95 @@
+﻿using System.Diagnostics;
+using System.Text.Json;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+
+namespace SpendWise.Api.Middleware;
+
+public static class GlobalExceptionHandler
+{
+    public static async Task HandleAsync(HttpContext context)
+    {
+        var feature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        var exception = feature?.Error;
+        var logger = context.RequestServices.GetService<ILoggerFactory>()?.CreateLogger("GlobalExceptionHandler");
+
+        var traceId = Activity.Current?.Id ?? context.TraceIdentifier;
+
+        context.Response.ContentType = "application/problem+json";
+
+        if (exception is ValidationException vx)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            var errors = vx.Errors
+                .GroupBy(e => e.PropertyName)
+                .ToDictionary(
+                    g => string.IsNullOrEmpty(g.Key) ? string.Empty : JsonNamingPolicy.CamelCase.ConvertName(g.Key),
+                    g => g.Select(e => e.ErrorMessage).ToArray());
+
+            var problem = new ValidationProblemDetails(errors)
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "One or more validation errors occurred.",
+                Status = StatusCodes.Status400BadRequest,
+                Instance = context.Request.Path
+            };
+            problem.Extensions["traceId"] = traceId;
+            await context.Response.WriteAsJsonAsync(problem);
+            return;
+        }
+
+        if (exception is SpendWise.Application.Common.Exceptions.ConflictException cex)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            var problem = new ProblemDetails
+            {
+                Title = cex.Message,
+                Status = StatusCodes.Status409Conflict,
+                Instance = context.Request.Path
+            };
+            problem.Extensions["traceId"] = traceId;
+            await context.Response.WriteAsJsonAsync(problem);
+            return;
+        }
+
+        if (exception is SpendWise.Application.Common.Exceptions.UnauthorizedException uex)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            var problem = new ProblemDetails
+            {
+                Title = uex.Message,
+                Status = StatusCodes.Status401Unauthorized,
+                Instance = context.Request.Path
+            };
+            problem.Extensions["traceId"] = traceId;
+            await context.Response.WriteAsJsonAsync(problem);
+            return;
+        }
+
+        if (exception is SpendWise.Application.Common.Exceptions.NotFoundException nf)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            var problem = new ProblemDetails
+            {
+                Title = nf.Message,
+                Status = StatusCodes.Status404NotFound,
+                Instance = context.Request.Path
+            };
+            problem.Extensions["traceId"] = traceId;
+            await context.Response.WriteAsJsonAsync(problem);
+            return;
+        }
+
+        // Unknown error
+        logger?.LogError(exception, "An unhandled exception occurred. TraceId: {TraceId}", traceId);
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        var generic = new ProblemDetails
+        {
+            Title = "An unexpected error occurred.",
+            Status = StatusCodes.Status500InternalServerError,
+            Instance = context.Request.Path
+        };
+        generic.Extensions["traceId"] = traceId;
+        await context.Response.WriteAsJsonAsync(generic);
+    }
+}
