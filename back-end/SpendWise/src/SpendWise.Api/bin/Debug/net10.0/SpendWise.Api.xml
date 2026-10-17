@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpendWise.Api</name>
+    </assembly>
+    <members>
+        <member name="M:SpendWise.Api.Controllers.AccountsController.GetAll(System.Threading.CancellationToken)">
+            <summary>
+            Get all accounts for the current user.
+            </summary>
+            <response code="200">List of accounts.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AccountsController.Get(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get account by id.
+            </summary>
+            <response code="200">Account found.</response>
+            <response code="404">Account not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AccountsController.Create(SpendWise.Application.Accounts.CreateAccountRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create a new account.
+            </summary>
+            <response code="201">Account created.</response>
+            <response code="400">Validation failed. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AccountsController.Update(System.Int32,SpendWise.Application.Accounts.UpdateAccountRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update an existing account.
+            </summary>
+            <response code="204">Update successful.</response>
+            <response code="404">Account not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AccountsController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Delete an account.
+            </summary>
+            <response code="204">Deletion successful.</response>
+            <response code="404">Account not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="T:SpendWise.Api.Controllers.AuthController">
+            <summary>
+            Authentication endpoints for registering, logging in and retrieving the current user.
+            Register and Login are anonymous; other endpoints require a valid JWT.
+            </summary>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AuthController.Register(SpendWise.Application.Auth.RegisterRequest,System.Threading.CancellationToken)">
+            <summary>
+            Register a new user.
+            </summary>
+            <remarks>
+            Creates a new user account and returns the created user information.
+            </remarks>
+            <param name="request">Registration request containing name, email and password.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <response code="201">User created successfully.</response>
+            <response code="400">Invalid request (validation errors). Returns ProblemDetails.</response>
+            <response code="409">Conflict (email already in use). Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AuthController.Login(SpendWise.Application.Auth.LoginRequest,System.Threading.CancellationToken)">
+            <summary>
+            Authenticate a user and return a JWT.
+            </summary>
+            <param name="request">Login request with email and password.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <response code="200">Authentication successful. Returns JWT and user info.</response>
+            <response code="400">Invalid credentials. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.AuthController.Me">
+            <summary>
+            Get information about the current authenticated user.
+            </summary>
+            <response code="200">Returns current user's id, name and email.</response>
+            <response code="401">Unauthorized when no valid JWT is provided. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.BudgetsController.Get(SpendWise.Application.Budgets.Dtos.BudgetQueryParams,System.Threading.CancellationToken)">
+            <summary>
+            Get budget overview for the specified query parameters.
+            </summary>
+            <response code="200">Budget overview.</response>
+            <response code="400">Invalid query. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.BudgetsController.Upsert(SpendWise.Application.Budgets.Dtos.UpsertBudgetRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create or update a budget.
+            </summary>
+            <response code="200">Budget upserted. Returns status.</response>
+            <response code="400">Validation failed. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.CategoriesController.GetAll(System.Nullable{SpendWise.Domain.Enums.TransactionType},System.Threading.CancellationToken)">
+            <summary>
+            Get all categories, optionally filtered by transaction type.
+            </summary>
+            <param name="type">Optional transaction type filter (Income or Expense).</param>
+            <response code="200">List of categories.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.CategoriesController.Get(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get category by id.
+            </summary>
+            <response code="200">Category found.</response>
+            <response code="404">Category not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.CategoriesController.Create(SpendWise.Application.Categories.CreateCategoryRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create a new category.
+            </summary>
+            <response code="201">Category created.</response>
+            <response code="400">Validation failed. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.CategoriesController.Update(System.Int32,SpendWise.Application.Categories.UpdateCategoryRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update a category.
+            </summary>
+            <response code="204">Update successful.</response>
+            <response code="404">Category not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.CategoriesController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Delete a category.
+            </summary>
+            <response code="204">Deletion successful.</response>
+            <response code="404">Category not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TagsController.GetAll(System.Threading.CancellationToken)">
+            <summary>
+            Get all tags.
+            </summary>
+            <response code="200">List of tags.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TagsController.Get(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get a tag by id.
+            </summary>
+            <response code="200">Tag found.</response>
+            <response code="404">Tag not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TagsController.Create(SpendWise.Application.Tags.CreateTagRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create a new tag.
+            </summary>
+            <response code="201">Tag created.</response>
+            <response code="400">Validation failed. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TagsController.Update(System.Int32,SpendWise.Application.Tags.UpdateTagRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update a tag.
+            </summary>
+            <response code="204">Update successful.</response>
+            <response code="404">Tag not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TagsController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Delete a tag.
+            </summary>
+            <response code="204">Deletion successful.</response>
+            <response code="404">Tag not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TransactionsController.Get(SpendWise.Application.Transactions.TransactionQueryParams,System.Threading.CancellationToken)">
+            <summary>
+            Get a paged list of transactions.
+            </summary>
+            <remarks>
+            Supported query parameters: page, pageSize, search, accountId, categoryId, type, from, to, minAmount, maxAmount, tagIds (repeatable), sortBy (date, amount, category), sortDir (asc, desc).
+            Repeated tagIds allowed as multiple query values (e.g. ?tagIds=1&amp;tagIds=2).
+            </remarks>
+            <param name="query">Filtering and paging parameters.</param>
+            <response code="200">Paged list of transactions.</response>
+            <response code="400">Invalid query parameters. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TransactionsController.Get(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get a single transaction by id.
+            </summary>
+            <param name="id">Transaction id.</param>
+            <response code="200">Transaction found.</response>
+            <response code="404">Transaction not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TransactionsController.Create(SpendWise.Application.Transactions.CreateTransactionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Create a new transaction.
+            </summary>
+            <param name="request">Transaction creation payload.</param>
+            <response code="201">Transaction created. Returns created transaction.</response>
+            <response code="400">Validation failed. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TransactionsController.Update(System.Int32,SpendWise.Application.Transactions.UpdateTransactionRequest,System.Threading.CancellationToken)">
+            <summary>
+            Update an existing transaction.
+            </summary>
+            <param name="id">Transaction id.</param>
+            <param name="request">Updated transaction payload.</param>
+            <response code="204">Update successful.</response>
+            <response code="404">Transaction not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="M:SpendWise.Api.Controllers.TransactionsController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Delete a transaction.
+            </summary>
+            <param name="id">Transaction id.</param>
+            <response code="204">Deletion successful.</response>
+            <response code="404">Transaction not found. Returns ProblemDetails.</response>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>

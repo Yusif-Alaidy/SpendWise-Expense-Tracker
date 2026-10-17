@@ -1,0 +1,88 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SpendWise.Application.Tags;
+
+namespace SpendWise.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+/// <summary>
+/// Manage tags.
+/// </summary>
+public class TagsController : ControllerBase
+{
+    private readonly ITagService _service;
+
+    public TagsController(ITagService service)
+    {
+        _service = service;
+    }
+
+    /// <summary>
+    /// Get all tags.
+    /// </summary>
+    /// <response code="200">List of tags.</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<TagListItemDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var items = await _service.GetAllAsync(cancellationToken);
+        return Ok(items);
+    }
+
+    /// <summary>
+    /// Get a tag by id.
+    /// </summary>
+    /// <response code="200">Tag found.</response>
+    /// <response code="404">Tag not found. Returns ProblemDetails.</response>
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(TagDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
+    {
+        var item = await _service.GetByIdAsync(id, cancellationToken);
+        return Ok(item);
+    }
+
+    /// <summary>
+    /// Create a new tag.
+    /// </summary>
+    /// <response code="201">Tag created.</response>
+    /// <response code="400">Validation failed. Returns ProblemDetails.</response>
+    [HttpPost]
+    [ProducesResponseType(typeof(TagDto), StatusCodes.Status201Created)]
+    public async Task<IActionResult> Create([FromBody] CreateTagRequest request, CancellationToken cancellationToken)
+    {
+        var created = await _service.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+    }
+
+    /// <summary>
+    /// Update a tag.
+    /// </summary>
+    /// <response code="204">Update successful.</response>
+    /// <response code="404">Tag not found. Returns ProblemDetails.</response>
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateTagRequest request, CancellationToken cancellationToken)
+    {
+        await _service.UpdateAsync(id, request, cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Delete a tag.
+    /// </summary>
+    /// <response code="204">Deletion successful.</response>
+    /// <response code="404">Tag not found. Returns ProblemDetails.</response>
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        await _service.DeleteAsync(id, cancellationToken);
+        return NoContent();
+    }
+}

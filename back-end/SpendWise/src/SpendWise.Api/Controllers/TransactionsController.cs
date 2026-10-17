@@ -8,6 +8,9 @@ namespace SpendWise.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+/// <summary>
+/// Manage transactions: list, get, create, update and delete.
+/// </summary>
 public class TransactionsController : ControllerBase
 {
     private readonly ITransactionService _service;
@@ -17,43 +20,83 @@ public class TransactionsController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Get a paged list of transactions.
+    /// </summary>
+    /// <remarks>
+    /// Supported query parameters: page, pageSize, search, accountId, categoryId, type, from, to, minAmount, maxAmount, tagIds (repeatable), sortBy (date, amount, category), sortDir (asc, desc).
+    /// Repeated tagIds allowed as multiple query values (e.g. ?tagIds=1&amp;tagIds=2).
+    /// </remarks>
+    /// <param name="query">Filtering and paging parameters.</param>
+    /// <response code="200">Paged list of transactions.</response>
+    /// <response code="400">Invalid query parameters. Returns ProblemDetails.</response>
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<TransactionDto>), StatusCodes.Status200OK)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Get([FromQuery] TransactionQueryParams query, CancellationToken cancellationToken)
     {
         var result = await _service.GetPagedAsync(query, cancellationToken);
         return Ok(result);
     }
 
+    /// <summary>
+    /// Get a single transaction by id.
+    /// </summary>
+    /// <param name="id">Transaction id.</param>
+    /// <response code="200">Transaction found.</response>
+    /// <response code="404">Transaction not found. Returns ProblemDetails.</response>
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(TransactionDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
     {
         var item = await _service.GetByIdAsync(id, cancellationToken);
         return Ok(item);
     }
 
+    /// <summary>
+    /// Create a new transaction.
+    /// </summary>
+    /// <param name="request">Transaction creation payload.</param>
+    /// <response code="201">Transaction created. Returns created transaction.</response>
+    /// <response code="400">Validation failed. Returns ProblemDetails.</response>
     [HttpPost]
     [ProducesResponseType(typeof(TransactionDto), StatusCodes.Status201Created)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Create([FromBody] CreateTransactionRequest request, CancellationToken cancellationToken)
     {
         var created = await _service.CreateAsync(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
 
+    /// <summary>
+    /// Update an existing transaction.
+    /// </summary>
+    /// <param name="id">Transaction id.</param>
+    /// <param name="request">Updated transaction payload.</param>
+    /// <response code="204">Update successful.</response>
+    /// <response code="404">Transaction not found. Returns ProblemDetails.</response>
     [HttpPut("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Update(int id, [FromBody] UpdateTransactionRequest request, CancellationToken cancellationToken)
     {
         await _service.UpdateAsync(id, request, cancellationToken);
         return NoContent();
     }
 
+    /// <summary>
+    /// Delete a transaction.
+    /// </summary>
+    /// <param name="id">Transaction id.</param>
+    /// <response code="204">Deletion successful.</response>
+    /// <response code="404">Transaction not found. Returns ProblemDetails.</response>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         await _service.DeleteAsync(id, cancellationToken);

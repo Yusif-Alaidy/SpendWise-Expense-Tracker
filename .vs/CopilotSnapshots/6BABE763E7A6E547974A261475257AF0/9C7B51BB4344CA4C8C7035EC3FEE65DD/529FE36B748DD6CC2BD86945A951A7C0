@@ -1,0 +1,31 @@
+﻿using Microsoft.AspNetCore.OpenApi;
+
+namespace SpendWise.Api.OpenApi;
+
+// The IOpenApiDocumentTransformer implementation must match the framework signature exactly.
+// We implement a minimal transformer that sets an extension on the document to indicate the
+// intention to use a Bearer security scheme. This avoids referencing Microsoft.OpenApi.Models
+// concrete types which are not directly available at compile-time here.
+public class DevelopmentOpenApiTransformer : IOpenApiDocumentTransformer
+{
+    public System.Threading.Tasks.Task TransformAsync(Microsoft.OpenApi.OpenApiDocument document, OpenApiDocumentTransformerContext context, System.Threading.CancellationToken cancellationToken)
+    {
+        try
+        {
+            // Set a top-level extension that tooling (Scalar UI or a post-processing step) can use to
+            // inject a proper Bearer security definition. Using 'x-' extension keeps this compile-safe.
+            // The document.Extensions property has type IDictionary<string, IOpenApiExtension>.
+            if (document.Extensions == null)
+                document.Extensions = new System.Collections.Generic.Dictionary<string, Microsoft.AspNetCore.OpenApi.OpenApiExtension>();
+
+            // Use a simple string extension via the OpenApiExtension wrapper available from Microsoft.AspNetCore.OpenApi
+            document.Extensions["x-spendwise-security-bearer"] = new Microsoft.AspNetCore.OpenApi.OpenApiString("bearer");
+        }
+        catch
+        {
+            // No-op if extensions types are not available; the built-in generator will still produce a valid document.
+        }
+
+        return System.Threading.Tasks.Task.CompletedTask;
+    }
+}

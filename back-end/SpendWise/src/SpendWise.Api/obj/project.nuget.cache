@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zAljmS5FckI=",
+  "dgSpecHash": "se2RJtmfc/k=",
   "success": true,
   "projectFilePath": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\src\\SpendWise.Api\\SpendWise.Api.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\Asus\\.nuget\\packages\\microsoft.visualstudio.solutionpersistence\\1.0.52\\microsoft.visualstudio.solutionpersistence.1.0.52.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\newtonsoft.json\\13.0.4\\newtonsoft.json.13.0.4.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\scalar.aspnetcore\\1.2.3\\scalar.aspnetcore.1.2.3.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\serilog\\4.0.0\\serilog.4.0.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\serilog.aspnetcore\\7.0.0\\serilog.aspnetcore.7.0.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\serilog.extensions.hosting\\7.0.0\\serilog.extensions.hosting.7.0.0.nupkg.sha512",

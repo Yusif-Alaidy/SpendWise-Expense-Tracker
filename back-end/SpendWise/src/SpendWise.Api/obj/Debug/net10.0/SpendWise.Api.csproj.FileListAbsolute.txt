@@ -186,3 +186,7 @@ D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWis
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Serilog.Sinks.Console.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Serilog.Sinks.Debug.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Serilog.Sinks.File.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\appsettings.Production.json
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\SpendWise.Api.xml
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Scalar.AspNetCore.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\obj\Debug\net10.0\SpendWise.Api.xml

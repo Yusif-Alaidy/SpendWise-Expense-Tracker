@@ -8,6 +8,9 @@ namespace SpendWise.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+/// <summary>
+/// Manage categories.
+/// </summary>
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _service;
@@ -17,43 +20,73 @@ public class CategoriesController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Get all categories, optionally filtered by transaction type.
+    /// </summary>
+    /// <param name="type">Optional transaction type filter (Income or Expense).</param>
+    /// <response code="200">List of categories.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IReadOnlyList<CategoryDto>), StatusCodes.Status200OK)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> GetAll([FromQuery] TransactionType? type, CancellationToken cancellationToken)
     {
         var items = await _service.GetAllAsync(type, cancellationToken);
         return Ok(items);
     }
 
+    /// <summary>
+    /// Get category by id.
+    /// </summary>
+    /// <response code="200">Category found.</response>
+    /// <response code="404">Category not found. Returns ProblemDetails.</response>
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
     {
         var item = await _service.GetByIdAsync(id, cancellationToken);
         return Ok(item);
     }
 
+    /// <summary>
+    /// Create a new category.
+    /// </summary>
+    /// <response code="201">Category created.</response>
+    /// <response code="400">Validation failed. Returns ProblemDetails.</response>
     [HttpPost]
     [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status201Created)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request, CancellationToken cancellationToken)
     {
         var created = await _service.CreateAsync(request, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
 
+    /// <summary>
+    /// Update a category.
+    /// </summary>
+    /// <response code="204">Update successful.</response>
+    /// <response code="404">Category not found. Returns ProblemDetails.</response>
     [HttpPut("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryRequest request, CancellationToken cancellationToken)
     {
         await _service.UpdateAsync(id, request, cancellationToken);
         return NoContent();
     }
 
+    /// <summary>
+    /// Delete a category.
+    /// </summary>
+    /// <response code="204">Deletion successful.</response>
+    /// <response code="404">Category not found. Returns ProblemDetails.</response>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         await _service.DeleteAsync(id, cancellationToken);

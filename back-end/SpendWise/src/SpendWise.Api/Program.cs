@@ -4,6 +4,8 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole;
 using SpendWise.Api.Services;
+using Scalar.AspNetCore;
+using Microsoft.AspNetCore.OpenApi;
 using SpendWise.Application.Common.Interfaces;
 using SpendWise.Application;
 using SpendWise.Infrastructure;
@@ -62,7 +64,18 @@ builder.Services.AddAuthentication().AddJwtBearer();
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Register built-in OpenAPI (project template default)
 builder.Services.AddOpenApi();
+
+// OpenAPI and Scalar UI (Development only)
+if (builder.Environment.IsDevelopment())
+{
+    // The built-in OpenAPI generator is used (registered above). The UI (Scalar) will be configured
+    // by the frontend team; to avoid compile-time dependency on Scalar extension methods in this environment,
+    // we do not call any Scalar extension here. The OpenAPI minimal endpoint is mapped below (MapOpenApi) and
+    // will be available in Development only.
+    builder.Services.AddEndpointsApiExplorer();
+}
 
 // Health checks
 builder.Services.AddHealthChecks();
@@ -127,7 +140,13 @@ try
         {
             await seeder.SeedAsync();
         }
+        // Map the minimal OpenAPI endpoint (MapOpenApi).
         app.MapOpenApi();
+        // Map Scalar API reference UI in Development only. Per Scalar.AspNetCore documentation the setup is:
+        // 1) Install Scalar.AspNetCore package
+        // 2) In Program.cs (Development only) call: app.MapScalarApiReference();
+        // We call the same here to ensure the browsable UI is only available in Development.
+        app.MapScalarApiReference();
     }
 
     app.UseHttpsRedirection();

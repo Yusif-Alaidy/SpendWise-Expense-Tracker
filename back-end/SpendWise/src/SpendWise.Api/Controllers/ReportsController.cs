@@ -21,6 +21,7 @@ public class ReportsController : ControllerBase
     [ProducesResponseType(typeof(MonthlySummaryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> MonthlySummary([FromQuery] MonthlySummaryQueryParams query, CancellationToken cancellationToken)
     {
         var res = await _service.GetMonthlySummaryAsync(query, cancellationToken);
@@ -31,6 +32,7 @@ public class ReportsController : ControllerBase
     [ProducesResponseType(typeof(CategoryBreakdownDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> CategoryBreakdown([FromQuery] CategoryBreakdownQueryParams query, CancellationToken cancellationToken)
     {
         var res = await _service.GetCategoryBreakdownAsync(query, cancellationToken);

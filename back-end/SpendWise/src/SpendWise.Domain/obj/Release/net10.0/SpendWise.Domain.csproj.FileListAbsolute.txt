@@ -1,0 +1,13 @@
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\bin\Release\net10.0\SpendWise.Domain.deps.json
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\bin\Release\net10.0\SpendWise.Domain.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\bin\Release\net10.0\SpendWise.Domain.pdb
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.AssemblyInfoInputs.cache
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.AssemblyInfo.cs
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.csproj.CoreCompileInputs.cache
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.sourcelink.json
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\refint\SpendWise.Domain.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWise.Domain.pdb
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\ref\SpendWise.Domain.dll
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Domain\obj\Release\net10.0\SpendWis.C970754B.Up2Date

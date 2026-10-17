@@ -8,6 +8,9 @@ namespace SpendWise.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
+/// <summary>
+/// Manage budgets and budget overview.
+/// </summary>
 public class BudgetsController : ControllerBase
 {
     private readonly IBudgetService _service;
@@ -17,16 +20,28 @@ public class BudgetsController : ControllerBase
         _service = service;
     }
 
+    /// <summary>
+    /// Get budget overview for the specified query parameters.
+    /// </summary>
+    /// <response code="200">Budget overview.</response>
+    /// <response code="400">Invalid query. Returns ProblemDetails.</response>
     [HttpGet]
     [ProducesResponseType(typeof(BudgetOverviewDto), StatusCodes.Status200OK)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Get([FromQuery] BudgetQueryParams query, CancellationToken cancellationToken)
     {
         var res = await _service.GetOverviewAsync(query, cancellationToken);
         return Ok(res);
     }
 
+    /// <summary>
+    /// Create or update a budget.
+    /// </summary>
+    /// <response code="200">Budget upserted. Returns status.</response>
+    /// <response code="400">Validation failed. Returns ProblemDetails.</response>
     [HttpPut]
     [ProducesResponseType(typeof(BudgetStatusDto), StatusCodes.Status200OK)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Upsert([FromBody] UpsertBudgetRequest request, CancellationToken cancellationToken)
     {
         var res = await _service.UpsertAsync(request, cancellationToken);
@@ -36,6 +51,7 @@ public class BudgetsController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    /// <param name="cancellationToken">Cancellation token.</param>
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         await _service.DeleteAsync(id, cancellationToken);

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "REl+eTwGmvc=",
+  "dgSpecHash": "6QE+RQd+itE=",
   "success": true,
   "projectFilePath": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\tests\\SpendWise.Tests\\SpendWise.Tests.csproj",
   "expectedPackageFiles": [
@@ -80,18 +80,6 @@
     "C:\\Users\\Asus\\.nuget\\packages\\xunit.runner.visualstudio\\3.1.4\\xunit.runner.visualstudio.3.1.4.nupkg.sha512"
   ],
   "logs": [
-    {
-      "code": "NU1603",
-      "level": "Warning",
-      "message": "SpendWise.Tests depends on Microsoft.Extensions.TimeProvider.Testing (>= 1.0.0) but Microsoft.Extensions.TimeProvider.Testing 1.0.0 was not found. Microsoft.Extensions.TimeProvider.Testing 8.0.0 was resolved instead.",
-      "projectPath": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\tests\\SpendWise.Tests\\SpendWise.Tests.csproj",
-      "warningLevel": 1,
-      "filePath": "D:\\Programing\\Projects\\SpendWise Expense Tracker\\back-end\\SpendWise\\tests\\SpendWise.Tests\\SpendWise.Tests.csproj",
-      "libraryId": "Microsoft.Extensions.TimeProvider.Testing",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
     {
       "code": "NU1902",
       "level": "Warning",

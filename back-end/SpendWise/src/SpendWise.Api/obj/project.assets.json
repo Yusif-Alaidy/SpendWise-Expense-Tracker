@@ -976,6 +976,22 @@
           }
         }
       },
+      "Scalar.AspNetCore/1.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Serilog/4.0.0": {
         "type": "package",
         "compile": {
@@ -3278,6 +3294,21 @@
         "packageIcon.png"
       ]
     },
+    "Scalar.AspNetCore/1.2.3": {
+      "sha512": "Hxaib23KO6y+tobaZJaNgZziDcXteJYyY43V+Qs/5NyDBWbFM1G6K0+BfsOhN8vmiBvCjluS9i/kHVsh0UEkFg==",
+      "type": "package",
+      "path": "scalar.aspnetcore/1.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.1.2.3.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
     "Serilog/4.0.0": {
       "sha512": "2jDkUrSh5EofOp7Lx5Zgy0EB+7hXjjxE2ktTb1WVQmU00lDACR2TdROGKU0K1pDTBSJBN1PqgYpgOZF8mL7NJw==",
       "type": "package",
@@ -3851,6 +3882,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 10.0.12",
       "Microsoft.EntityFrameworkCore.Tools >= 10.0.12",
       "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore >= 8.0.0",
+      "Scalar.AspNetCore >= 1.2.3",
       "Serilog.AspNetCore >= 7.0.0",
       "Serilog.Sinks.Console >= 4.0.1",
       "Serilog.Sinks.File >= 6.0.0",
@@ -3940,6 +3972,10 @@
           "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
             "target": "Package",
             "version": "[8.0.0, )"
+          },
+          "Scalar.AspNetCore": {
+            "target": "Package",
+            "version": "[1.2.3, )"
           },
           "Serilog.AspNetCore": {
             "target": "Package",

@@ -1,0 +1,48 @@
+﻿using Microsoft.AspNetCore.OpenApi;
+using Microsoft.OpenApi; // types live directly in Microsoft.OpenApi for 2.x
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Writers;
+using Microsoft.OpenApi.Extensions;
+
+namespace SpendWise.Api.OpenApi;
+
+// IOpenApiDocumentTransformer is the pattern for transforming the generated OpenAPI document
+public class DevelopmentOpenApiTransformer : IOpenApiDocumentTransformer
+{
+    public void Transform(Microsoft.OpenApi.OpenApiDocument document)
+    {
+        // Add Bearer security scheme using Microsoft.OpenApi 2.x types (namespace Microsoft.OpenApi)
+        var bearerScheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
+        {
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Name = "Authorization",
+            Description = "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'",
+        };
+
+        // In Microsoft.OpenApi 2.x the models are in Microsoft.OpenApi.Models; ensure compatibility.
+        document.Components ??= new Microsoft.OpenApi.Models.OpenApiComponents();
+        document.Components.SecuritySchemes ??= new System.Collections.Generic.Dictionary<string, Microsoft.OpenApi.Models.OpenApiSecurityScheme>();
+        document.Components.SecuritySchemes["Bearer"] = bearerScheme;
+
+        var globalRequirement = new Microsoft.OpenApi.Models.OpenApiSecurityRequirement();
+        globalRequirement.Add(bearerScheme, new System.Collections.Generic.List<string>());
+
+        // Apply security requirement to operations that are not marked AllowAnonymous via extensions
+        foreach (var path in document.Paths)
+        {
+            foreach (var operation in path.Value.Operations)
+            {
+                // If operation extensions contain x-allow-anonymous or similar, skip adding security
+                if (operation.Value.Extensions.ContainsKey("x-allow-anonymous"))
+                    continue;
+
+                // Add security requirement to the operation
+                operation.Value.Security ??= new System.Collections.Generic.List<Microsoft.OpenApi.Models.OpenApiSecurityRequirement>();
+                operation.Value.Security.Add(globalRequirement);
+            }
+        }
+    }
+}

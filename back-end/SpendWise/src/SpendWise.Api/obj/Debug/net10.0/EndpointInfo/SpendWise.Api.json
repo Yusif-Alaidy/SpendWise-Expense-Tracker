@@ -18,9 +18,10 @@
         "tags": [
           "Accounts"
         ],
+        "summary": "Get all accounts for the current user.",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "List of accounts.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -54,6 +55,7 @@
         "tags": [
           "Accounts"
         ],
+        "summary": "Create a new account.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -76,7 +78,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Account created.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -103,6 +105,7 @@
         "tags": [
           "Accounts"
         ],
+        "summary": "Get account by id.",
         "parameters": [
           {
             "name": "id",
@@ -117,7 +120,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Account found.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -137,7 +140,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Account not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -162,6 +165,7 @@
         "tags": [
           "Accounts"
         ],
+        "summary": "Update an existing account.",
         "parameters": [
           {
             "name": "id",
@@ -196,10 +200,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Update successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Account not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -224,6 +228,7 @@
         "tags": [
           "Accounts"
         ],
+        "summary": "Delete an account.",
         "parameters": [
           {
             "name": "id",
@@ -238,10 +243,10 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Deletion successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Account not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -268,7 +273,10 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Register a new user.",
+        "description": "Creates a new user account and returns the created user information.",
         "requestBody": {
+          "description": "Cancellation token.",
           "content": {
             "application/json": {
               "schema": {
@@ -300,7 +308,9 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Authenticate a user and return a JWT.",
         "requestBody": {
+          "description": "Cancellation token.",
           "content": {
             "application/json": {
               "schema": {
@@ -322,7 +332,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Authentication successful. Returns JWT and user info."
           }
         }
       }
@@ -332,9 +342,10 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Get information about the current authenticated user.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Returns current user's id, name and email."
           }
         }
       }
@@ -344,6 +355,7 @@
         "tags": [
           "Budgets"
         ],
+        "summary": "Get budget overview for the specified query parameters.",
         "parameters": [
           {
             "name": "Year",
@@ -372,7 +384,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Budget overview.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -397,6 +409,7 @@
         "tags": [
           "Budgets"
         ],
+        "summary": "Create or update a budget.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -419,7 +432,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Budget upserted. Returns status.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -493,10 +506,12 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Get all categories, optionally filtered by transaction type.",
         "parameters": [
           {
             "name": "type",
             "in": "query",
+            "description": "Optional transaction type filter (Income or Expense).",
             "schema": {
               "$ref": "#/components/schemas/TransactionType"
             }
@@ -504,7 +519,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "List of categories.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -538,6 +553,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Create a new category.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -560,7 +576,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Category created.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -587,6 +603,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Get category by id.",
         "parameters": [
           {
             "name": "id",
@@ -601,7 +618,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Category found.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -621,7 +638,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Category not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -646,6 +663,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Update a category.",
         "parameters": [
           {
             "name": "id",
@@ -680,10 +698,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Update successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Category not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -708,6 +726,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Delete a category.",
         "parameters": [
           {
             "name": "id",
@@ -722,10 +741,10 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Deletion successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Category not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -941,9 +960,10 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Get all tags.",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "List of tags.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -977,6 +997,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Create a new tag.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -999,7 +1020,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Tag created.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1026,6 +1047,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Get a tag by id.",
         "parameters": [
           {
             "name": "id",
@@ -1040,7 +1062,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Tag found.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1060,7 +1082,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Tag not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1085,6 +1107,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Update a tag.",
         "parameters": [
           {
             "name": "id",
@@ -1119,10 +1142,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Update successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Tag not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1147,6 +1170,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Delete a tag.",
         "parameters": [
           {
             "name": "id",
@@ -1161,10 +1185,10 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Deletion successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Tag not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1191,6 +1215,8 @@
         "tags": [
           "Transactions"
         ],
+        "summary": "Get a paged list of transactions.",
+        "description": "Supported query parameters: page, pageSize, search, accountId, categoryId, type, from, to, minAmount, maxAmount, tagIds (repeatable), sortBy (date, amount, category), sortDir (asc, desc).\r\nRepeated tagIds allowed as multiple query values (e.g. ?tagIds=1&amp;tagIds=2).",
         "parameters": [
           {
             "name": "Page",
@@ -1326,7 +1352,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Paged list of transactions.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1351,7 +1377,9 @@
         "tags": [
           "Transactions"
         ],
+        "summary": "Create a new transaction.",
         "requestBody": {
+          "description": "Transaction creation payload.",
           "content": {
             "application/json": {
               "schema": {
@@ -1373,7 +1401,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created",
+            "description": "Transaction created. Returns created transaction.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1400,10 +1428,12 @@
         "tags": [
           "Transactions"
         ],
+        "summary": "Get a single transaction by id.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Transaction id.",
             "required": true,
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -1414,7 +1444,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Transaction found.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1434,7 +1464,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Transaction not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1459,10 +1489,12 @@
         "tags": [
           "Transactions"
         ],
+        "summary": "Update an existing transaction.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Transaction id.",
             "required": true,
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -1472,6 +1504,7 @@
           }
         ],
         "requestBody": {
+          "description": "Updated transaction payload.",
           "content": {
             "application/json": {
               "schema": {
@@ -1493,10 +1526,10 @@
         },
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Update successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Transaction not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1521,10 +1554,12 @@
         "tags": [
           "Transactions"
         ],
+        "summary": "Delete a transaction.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Transaction id.",
             "required": true,
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -1535,10 +1570,10 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Deletion successful."
           },
           "404": {
-            "description": "Not Found",
+            "description": "Transaction not found. Returns ProblemDetails.",
             "content": {
               "text/plain": {
                 "schema": {
