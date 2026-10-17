@@ -33,8 +33,4 @@
     <ProjectReference Include="..\SpendWise.Infrastructure\SpendWise.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="OpenApi\" />
-  </ItemGroup>
-
 </Project>
