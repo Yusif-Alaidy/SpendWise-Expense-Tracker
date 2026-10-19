@@ -171,7 +171,6 @@ D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWis
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\runtimes\win-arm64\native\msalruntime_arm64.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\runtimes\win-x64\native\msalruntime.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\runtimes\win-x86\native\msalruntime_x86.dll
-D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\FluentValidation.dll
@@ -190,3 +189,4 @@ D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWis
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\SpendWise.Api.xml
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\bin\Debug\net10.0\Scalar.AspNetCore.dll
 D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\obj\Debug\net10.0\SpendWise.Api.xml
+D:\Programing\Projects\SpendWise Expense Tracker\back-end\SpendWise\src\SpendWise.Api\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
